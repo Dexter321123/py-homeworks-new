@@ -1,0 +1,131 @@
+def sep():
+    print(30*'-')
+
+class Animal:
+    def __init__(self, name, weight):
+        self.name = name
+        self.weight = weight
+    def speak(self):
+        print("{}: Привет детка, а вот и я!".format(self.name))
+        print("{}: I'm sexy and i know it, мой вес {} кг".format(self.name, self.weight))
+        sep()
+    def action(self, user):
+        print("{}: Танцует (развратно и развязно), {}...ula-la-la".format(self.name, user))
+        sep()
+    def eat(self):
+        print("{} безжалостно поедает предложенный сухпай".format(self.name))
+        sep()
+
+class Me:
+    name = 'Andrew'
+    def say_hello(self,obj):
+        print('Я: Приветик, {}, как делишки?'.format(obj.name))
+        obj.speak()
+    def ask_action(self, obj):
+        print('Я: Можешь кое что для меня сделать {}?'.format(obj.name))
+        obj.action(self.name)
+    def want_eggs(self, obj):
+        print("Я: Дай мне немного яйков, {}".format(obj.name))
+        if type(obj) == Goose or type(obj) == Chicken or type(obj) == Duck:
+            obj.give_eggs(self.name)
+        else:
+            print("Прости, но у {} нет яйков".format(obj.name))
+    def feed(self, obj):
+        print('Подкрепись, {}'.format(obj.name))
+        obj.eat()
+    def ask_heaviest_animal(self, *animals):
+        animals_list = []
+        for animal in animals:
+            animals_list.append([animal.name, animal.weight])
+        animals_list.sort(key=lambda i: i[1], reverse=True)
+        for i in animals_list:
+            print("%20s: %1d" % (i[0], i[1]) + ' кг')
+        sep()
+        print('Самое толстенная животинка (кроме дяди Джо): {}'.format(animals_list[0][0]))
+
+class Goose(Animal):
+    def speak(self):
+        print('Обалдеть, я говорящий гусь {}! Гы-гы-гы'.format(self.name))
+        sep()
+    def action(self, user):
+        print('{} нагло пощипывает травку'.format(self.name))
+        sep()
+    def give_eggs(self, user):
+        print("Теперь, {} имеет мощные и большие яйки {}".format(user, self.name))
+
+class Cow(Animal):
+    def speak(self):
+        print('Мууууууууу - ах - ха - ха, Звать меня {}! Мууууууууууууу - зыку'.format(self.name))
+        sep()
+    def action(self, user):
+        print('{} танцует под музыку и дает молоко населению'.format(self.name))
+        sep()
+
+class Goat(Cow, Animal):
+    def speak(self):
+        print('бееееее, бееееее-саме мучо, Меня звать величать {}! я настоящий КОЗЕЛ!'.format(self.name))
+        sep()
+
+class Sheep(Animal):
+    def speak(self):
+        print('Бе-бе- бе - бе, беееее - белисимо меня звать {}! Я ОВЕЦ!'.format(self.name))
+        sep()
+
+    def action(self, user):
+        print('{} скидывает шкурку {}, и теперь у нас есть шерсть по всему телу'.format(user, self.name))
+        sep()
+
+class Chicken(Goose, Animal):
+    def speak(self):
+        print('Ко-ок-ко-кокс, меня звать величать {}! я ЦЫПА!'.format(self.name))
+        sep()
+
+class Duck(Goose, Animal):
+    def speak(self):
+        print('Кряк-крэк, кряк-крэк, меня звать {}! я гусь (Duck), Но на самом деле я МакДак!'.format(self.name))
+        sep()
+
+human = Animal('Старый Дядя Джо', 80)
+gray_goose = Goose('Сэрый', 5)
+white_goose = Goose('Бэлий', 7)
+cow = Cow('Манька', 300)
+goat_horns = Goat('Рогатый', 10)
+goat_hooves = Goat('Криворогий', 9)
+sheep_barry = Sheep('Бяшка', 17)
+sheep_curvy = Sheep('Кучерявый', 15)
+chicken_koko = Chicken('Кокошка', 2)
+chicken_kuku = Chicken('Кукушка', 2.5)
+krya_duck = Duck('Кря-кря', 3)
+
+i = Me()
+i.say_hello(human)
+i.ask_action(human)
+i.feed(human)
+
+sep()
+i.say_hello(gray_goose)
+i.ask_action(gray_goose)
+i.want_eggs(gray_goose)
+i.feed(gray_goose)
+
+sep()
+i.say_hello(white_goose)
+i.ask_action(white_goose)
+i.want_eggs(white_goose)
+
+sep()
+i.say_hello(cow)
+i.ask_action(cow)
+i.want_eggs(cow)
+
+sep()
+i.say_hello(goat_horns)
+i.ask_action(goat_horns)
+i.want_eggs(goat_horns)
+
+sep()
+i.say_hello(goat_hooves)
+i.ask_action(goat_hooves)
+i.feed(goat_hooves)
+
+i.ask_heaviest_animal(human, gray_goose, white_goose, cow, goat_horns, goat_hooves, sheep_barry, sheep_curvy, chicken_koko, chicken_kuku, krya_duck)
