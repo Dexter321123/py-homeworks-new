@@ -1,0 +1,51 @@
+s = '2 2 +'
+ 
+stack = []
+for i in s.split(' '):
+    try:
+        stack.append(int(i))
+    except ValueError:
+        if i == '+':
+            a, b = stack.pop(), stack.pop()
+            stack.append(b + a)
+        elif i == '*':
+            a, b = stack.pop(), stack.pop()
+            stack.append(b * a)
+        else:
+            raise NotImplementedError
+    print(stack)
+        
+assert(len(stack) == 1)
+print(stack[0])
+
+
+number_1 = input('ВВедите первый элемент: ')
+number_2 = input('ВВедите второй элемент: ')
+number_3 = input('ВВедите третий элемент: ')
+
+Primer = [number_1, number_2, number_3]
+
+plus = '+'
+minus = '-'
+multiply = '*'
+divide = '/'
+
+addition = int(number_3) + int(number_2)
+subtraction = int(number_3) - int(number_2)
+multiplication = int(number_3) * int(number_2)
+division = int(number_3) // int(number_2)
+
+if number_1 == plus:
+  print(addition)
+if number_1 == minus:
+  print(subtraction)
+if number_1 == multiply:
+  print(multiplication)
+try:
+  if number_1 == divide:
+    print(division)
+  else:
+    if number_1 == 0 or number_2 == 0:
+      print(division)
+except Exception as e:
+   print("Error! " + str(e))    
