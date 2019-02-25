@@ -1,0 +1,160 @@
+cook_book = {
+  'Омлет': [
+    {'ingridient_name': 'Яйцо', 'quantity': 2, 'measure': 'шт.'},
+    {'ingridient_name': 'Молоко', 'quantity': 100, 'measure': 'мл'},
+    {'ingridient_name': 'Помидор', 'quantity': 2, 'measure': 'шт'}
+    ],
+  'Утка по-пекински': [
+    {'ingridient_name': 'Утка', 'quantity': 1, 'measure': 'шт'},
+    {'ingridient_name': 'Вода', 'quantity': 2, 'measure': 'л'},
+    {'ingridient_name': 'Мед', 'quantity': 3, 'measure': 'ст.л'},
+    {'ingridient_name': 'Соевый соус', 'quantity': 60, 'measure': 'мл'}
+    ],
+  'Запеченный картофель': [
+    {'ingridient_name': 'Картофель', 'quantity': 1, 'measure': 'кг'},
+    {'ingridient_name': 'Помидор', 'quantity': 2, 'measure': 'шт'},
+    {'ingridient_name': 'Сыр гауда', 'quantity': 100, 'measure': 'г'},
+    ]
+  }
+'''
+
+def Create_Dict():
+  CookBook_dict = {}
+  with open ('CookBook.txt') as f:
+    for line in f:
+      dish = line
+      if dish == '\n':
+        #print ('Кончилось')
+        dish = f.readline()
+      ingridients_number = int(f.readline().strip())
+      #print('кол-во:',ingridients_number)
+      dish_list = []
+      for i in range(ingridients_number):
+        ingr = f.readline().strip().split(' | ')
+        #print (ingr)
+        ingridient_dict = {'ingridient_name': ingr[0], 'quantity': ingr[1], 'measure': ingr[2]}
+        #print (ingridient_dict)
+        dish_list.append(ingridient_dict)
+        #dishes = '{}\n'.format(dish_list)
+        CookBook_dict[dish.strip()] = dish_list
+      #print(dish_list)
+  #print(CookBook_dict)
+  return CookBook_dict
+
+def Dictionary_Output(Dictionary):
+  for key, value in Dictionary.items(): #CookBook_dict.items():
+    print(key,': \n', value, '\n')
+  
+
+
+def add_new_dish():
+  print ('Укажите название блюда (новое)')
+  new_dish_name = input()
+  new_dish_list =[] 
+  
+  print ('Количество необходмых ингридиентов')
+  try:
+    ingrs_num = int(input())
+  except ValueError:
+    print ('got Value error' + 'Введено не числовое значение') 
+  
+  try:
+    print (Указывать в строчном режиме через запятую:')
+    for i in range(ingrs_num):
+      print(i+1, '-й ингридиент, количесво, и величина:') 
+      ingr = list(input().split(','))
+      ingridient_dict = {'ingridient_name': ingr[0], 'quantity': ingr[1], 'measure': ingr[2]}
+      #print(ingridient_dict)
+      new_dish_list.append(ingridient_dict)
+  except IndexError:
+    print ('got IndexError')
+  except ValueError:
+    print ('got Value error')
+  except TypeError:
+    print ('got TypeError')
+  finally:
+    print('Записать рецепт в файл? - Да/Нет')
+    if input() == 'Да':
+      print ('Да')
+      f = open('CookBook.txt', 'a')
+      try:
+        f.write('\n' + new_dish_name + '\n')
+        f.write(str(ingrs_num)+ '\n')
+        for i in range(ingrs_num):
+          f.write(new_dish_list[i].get('ingridient_name') + ' | ' + new_dish_list[i].get('quantity') + ' | ' + new_dish_list[i].get('measure') + '\n' )
+          
+      except IOError:
+        print("An IOError has occurred!")
+      except IndexError:
+        print("got Index Error")
+      finally:
+        #f.write('\n')
+        print('Записан новый рецепт')
+    else:
+      print ('Файл не перезаписан')
+
+
+#Задача2
+
+'''
+На выходе:
+{
+  'Картофель': {'measure': 'кг', 'quantity': 2},
+  'Молоко': {'measure': 'мл', 'quantity': 200},
+  'Помидор': {'measure': 'шт', 'quantity': 8},
+  'Сыр гауда': {'measure': 'г', 'quantity': 200},
+  'Яйцо': {'measure': 'шт', 'quantity': 4},
+  'Чеснок': {'measure': 'зубч', 'quantity': 6}
+}
+'''
+
+
+def welcome_dinner(Dictionary):
+  print ('Количество человек на ужине: ')
+  persons = int(input())
+  print ('Названия блюд через запятую котороые подать на ужин (Из расчета на 1 человека):')
+  dinner_dishes = list(input().split(', ' or ' '))
+  #print (dinner_dishes)
+  
+  #dinner_shop = dict.fromkeys(dinner, {})
+  shop_dict = {}
+
+  for i in range (len(dinner_dishes)):
+    #print(dinner_dishes[i])
+    for key in Dictionary.keys():
+      if dinner_dishes[i] == key:
+      #  print ('Совпадения найдены')
+      #else:
+      # print('Имеются проблемы')
+        dish_receipt = Dictionary.get(key)
+        #print (dish_receipt)
+        for j in range (len(dish_receipt)):
+          #print (dish_receipt[j])
+          #shop_dict[dish_receipt[j]['ingridient_name']] = {}
+          dish_receipt[j]['quantity']= int(dish_receipt[j]['quantity'])*persons
+          #print(dish_receipt[j])
+          if dish_receipt[j]['ingridient_name'] not in shop_dict:
+            shop_dict[dish_receipt[j]['ingridient_name']] = dish_receipt[j]
+            #print(shop_dict[dish_receipt[j]['ingridient_name']])
+            
+          else:
+            shop_dict[dish_receipt[j]['ingridient_name']]['quantity'] += dish_receipt[j]['quantity']
+
+
+  return shop_dict
+
+
+print ('В программе можно выбрать любое из следующих доступных действий:\n nd - (new dish), добавить новое блюдо, \n bv - (book view), посмотреть рецепты из книги, \n wd - (welcome dinner) - список покупок для формирования стола \n q - (quit) Можно завершить работу программы:  \n Bone appetite =)')
+
+while(1):
+  print('\n Ввести команду:')
+  user_command = input()
+  if  user_command == 'q': 
+    break;
+    print ("Программа завершена")
+  elif user_command == 'nd':
+    add_new_dish()
+  elif user_command == 'bv':
+    Dictionary_Output(Create_Dict())
+  elif user_command == 'wd':
+    Dictionary_Output(welcome_dinner(Create_Dict()))
