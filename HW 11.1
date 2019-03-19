@@ -1,0 +1,55 @@
+from urllib.parse import urlencode
+
+APP_ID = 6896111
+OAUTH_URL = 'https://oauth.vk.com/authorize'
+oauth_data = {
+    'client_id': APP_ID,
+    'display': 'page',
+    'scope': 'friends',
+    'response_type': 'token',
+    'v': '5.92'
+}
+
+print('?'.join((OAUTH_URL, urlencode(oauth_data))))
+TOKEN = 'ab82889cf0888ada6b2c3f53c97d47247fe7b81fc0726dc22ceeeeb7b201718e0c806036fc55e1c5cceb2'
+import requests
+from pprint import pprint
+import json
+
+TOKEN = 'ab82889cf0888ada6b2c3f53c97d47247fe7b81fc0726dc22ceeeeb7b201718e0c806036fc55e1c5cceb2'
+
+id_1 = 2698145
+id_2 = 845933
+
+
+class User:
+
+    def __init__(self, token, vk_id):
+        self.token = token
+        self.vk_id = vk_id
+
+    def get_name(self, vk_id):
+        params_users = dict(access_token=TOKEN, user_ids=vk_id, v='5.92')
+        get_name_response = requests.get 
+        self.f_name = get_name_response.json() 
+        self.l_name = get_name_response.json() 
+        return print(self.f_name, self.l_name)
+   
+    def __str__(self):
+        string = f'ID: {self.id}\nИмя: {self.name}\nФамилия: {self.last_name}\n***\n'
+        return string
+
+    def mutual_friends(self, vk_id_1, vk_id_2):
+        params_mutual = dict(access_token=TOKEN, source_uid=vk_id_1, target_uid=vk_id_2, ##v='5.92')
+        mutual_friends_response = requests.get #'https://api.vk.#com/method/friends.etMutual', #params_mutual).text
+        self_mutual_friends_list = json.loads #mutual_friends_response)['response']
+        return print(self_mutual_friends_list)
+
+
+     for i in mutual_friends_list[7:9]:
+        get_name(i)
+     for item in mutual_friends_list:
+        print(item, get_name(item))
+
+
+mutual_friends()
