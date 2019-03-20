@@ -1,0 +1,89 @@
+import time
+import textwrap
+
+start = time.monotonic()
+print ('the time is: ', time.time())
+
+class open_file:
+   
+    # obj = self.__enter__
+
+    def __init__(self, filename, mode):
+        self.f = open(filename, mode)
+
+
+
+    def __enter__(self):
+        return self.f             
+
+    def __exit__(self, *args):
+        self.f.close()
+
+
+
+
+def triadfunction():
+    
+    from random import randrange
+    print("Введите кол-во элементов в списке")
+    n = int(input())
+    list_random = [randrange(0, 1 * n) for i in range(n)]
+    print("Исходный список:" + '\n', str(list_random) + '\n')
+
+    
+    if n % 3 == 2:
+        list_random = list_random[:-2]
+    elif n % 3 == 1:
+        list_random = list_random[:-1]
+    print("Cписок, который можно разбить на триады:" + '\n', str(list_random) + '\n')
+
+   
+    triada = []  
+    list_triad = []  
+    list_sum = []  
+    i, j, k = 0, 0, 0
+
+    for i in range(len(list_random)):
+        if j < 3:
+            triada.append(list_random[i])
+            j += 1
+        if j == 3:
+            print(triada, sum(triada))
+            list_triad.append(triada)
+            list_sum.append(sum(triada))
+            k += 1
+            triada = []
+            j = 0
+
+    # задание 3.
+    print(sorted(list_triad))
+    return (list_triad)
+
+
+triad_list = triadfunction()
+
+
+# Вариант работы без контекст менеджера
+'''
+f = open('LogFile.txt', 'a') # тут дописываем информацию в файл
+try:
+    f.write(str(triad_list) + '\n')
+except IOError:
+    print("An IOError has occured")
+except IndexError:
+    print("got Index error")
+finally:
+    print ('триады сформированы, отсортированы и записаны')
+'''
+
+# Вариант работы с контекст менеджером:
+with open_file('FileLog.txt', 'a') as f:
+    f.write(str(triad_list) + '\n')
+
+
+print ('the time is: ', time.time())
+end = time.monotonic()
+
+print ('start : {:>9.2f}'.format(start))
+print ('end   : {:>9.2f}'.format(end))
+print ('span  : {:>9.2f}'.format(end - start))
